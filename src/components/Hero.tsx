@@ -66,7 +66,12 @@ const Hero = () => {
               <span>Get Started</span>
               <ArrowRight size={20} />
             </button>
-            <button className="border-2 border-gray-300 hover:border-blue-600 text-gray-700 hover:text-blue-600 px-8 py-4 rounded-xl font-semibold transition-all duration-200">
+            <button
+              className="border-2 border-gray-300 hover:border-blue-600 text-gray-700 hover:text-blue-600 px-8 py-4 rounded-xl font-semibold transition-all duration-200"
+              onClick={() => {
+                window.location.hash = '/docs';
+              }}
+            >
               View Documentation
             </button>
           </div>
