@@ -1,5 +1,21 @@
 import React, { useState } from 'react';
-import { Search, Book, ExternalLink, ChevronRight, Filter } from 'lucide-react';
+import {
+  Search,
+  Book,
+  ExternalLink,
+  ChevronRight,
+  Filter,
+  Copy,
+  Check
+} from 'lucide-react';
+
+interface Method {
+  name: string;
+  category: string;
+  description: string;
+  signature: string;
+  example: string;
+}
 
 interface Method {
   name: string;
@@ -13,6 +29,13 @@ const Documentation = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedMethod, setSelectedMethod] = useState<Method | null>(null);
+  const [copied, setCopied] = useState('');
+
+  const copy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(text);
+    setTimeout(() => setCopied(''), 2000);
+  };
 
   const categories = ['All', 'Array', 'Object', 'String', 'Async', 'Math', 'Date'];
 
@@ -152,6 +175,21 @@ const Documentation = () => {
               </select>
             </div>
           </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {categories.map(cat => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1 rounded-full text-sm border transition-colors ${
+                  selectedCategory === cat
+                    ? 'bg-blue-600 text-white border-blue-600'
+                    : 'bg-white text-gray-600 border-gray-300 hover:bg-blue-50'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Methods List */}
@@ -181,13 +219,31 @@ const Documentation = () => {
 
                 {/* Signature */}
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                  <h4 className="text-sm font-semibold text-gray-700 mb-2">Signature</h4>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-gray-700">Signature</h4>
+                    <button onClick={() => copy(method.signature)}>
+                      {copied === method.signature ? (
+                        <Check size={16} className="text-green-500" />
+                      ) : (
+                        <Copy size={16} className="text-gray-500" />
+                      )}
+                    </button>
+                  </div>
                   <code className="text-sm text-gray-800 font-mono">{method.signature}</code>
                 </div>
 
                 {/* Example */}
                 <div className="bg-blue-50 rounded-lg p-4">
-                  <h4 className="text-sm font-semibold text-blue-700 mb-2">Example</h4>
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-sm font-semibold text-blue-700">Example</h4>
+                    <button onClick={() => copy(method.example)}>
+                      {copied === method.example ? (
+                        <Check size={16} className="text-green-500" />
+                      ) : (
+                        <Copy size={16} className="text-blue-700" />
+                      )}
+                    </button>
+                  </div>
                   <code className="text-sm text-blue-800 font-mono">{method.example}</code>
                 </div>
               </div>
@@ -222,6 +278,29 @@ const Documentation = () => {
             </h3>
             <p className="text-gray-600 mb-4">{selectedMethod.description}</p>
             <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-sm font-semibold text-gray-700">Signature</h4>
+                <button onClick={() => copy(selectedMethod.signature)}>
+                  {copied === selectedMethod.signature ? (
+                    <Check size={16} className="text-green-500" />
+                  ) : (
+                    <Copy size={16} className="text-gray-500" />
+                  )}
+                </button>
+              </div>
+              <code className="text-sm text-gray-800 font-mono">{selectedMethod.signature}</code>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-sm font-semibold text-blue-700">Example</h4>
+                <button onClick={() => copy(selectedMethod.example)}>
+                  {copied === selectedMethod.example ? (
+                    <Check size={16} className="text-green-500" />
+                  ) : (
+                    <Copy size={16} className="text-blue-700" />
+                  )}
+                </button>
+              </div>
               <h4 className="text-sm font-semibold text-gray-700 mb-2">Signature</h4>
               <code className="text-sm text-gray-800 font-mono">{selectedMethod.signature}</code>
             </div>
