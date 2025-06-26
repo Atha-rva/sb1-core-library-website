@@ -17,6 +17,14 @@ interface Method {
   example: string;
 }
 
+interface Method {
+  name: string;
+  category: string;
+  description: string;
+  signature: string;
+  example: string;
+}
+
 const Documentation = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -293,6 +301,11 @@ const Documentation = () => {
                   )}
                 </button>
               </div>
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Signature</h4>
+              <code className="text-sm text-gray-800 font-mono">{selectedMethod.signature}</code>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4">
+              <h4 className="text-sm font-semibold text-blue-700 mb-2">Example</h4>
               <code className="text-sm text-blue-800 font-mono">{selectedMethod.example}</code>
             </div>
             <button
