@@ -160,7 +160,12 @@ const short = truncate(longText, 20);
               Join thousands of developers who are already using CoreUtils to build better applications.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
+                onClick={() => {
+                  window.location.hash = '/docs';
+                }}
+              >
                 <span>View Documentation</span>
                 <ArrowRight size={20} />
               </button>
