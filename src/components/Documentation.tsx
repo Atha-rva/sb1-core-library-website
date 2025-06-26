@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import { Search, Book, ExternalLink, ChevronRight, Filter } from 'lucide-react';
 
+interface Method {
+  name: string;
+  category: string;
+  description: string;
+  signature: string;
+  example: string;
+}
+
 const Documentation = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedMethod, setSelectedMethod] = useState<Method | null>(null);
 
   const categories = ['All', 'Array', 'Object', 'String', 'Async', 'Math', 'Date'];
 
@@ -160,7 +169,10 @@ const Documentation = () => {
                       {method.category}
                     </span>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-700 transition-colors">
+                  <button
+                    className="text-blue-600 hover:text-blue-700 transition-colors"
+                    onClick={() => setSelectedMethod(method)}
+                  >
                     <ExternalLink size={18} />
                   </button>
                 </div>
@@ -180,9 +192,9 @@ const Documentation = () => {
                 </div>
               </div>
             ))}
-          </div>
+        </div>
 
-          {filteredMethods.length === 0 && (
+        {filteredMethods.length === 0 && (
             <div className="text-center py-12">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Search size={24} className="text-gray-400" />
@@ -190,11 +202,45 @@ const Documentation = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No methods found</h3>
               <p className="text-gray-600">Try adjusting your search or filter criteria.</p>
             </div>
-          )}
-        </div>
+        )}
+      </div>
 
-        {/* Documentation CTA */}
-        <div className="text-center mt-16">
+      {selectedMethod && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          onClick={() => setSelectedMethod(null)}
+        >
+          <div
+            className="bg-white rounded-xl p-6 max-w-lg w-full mx-4"
+            onClick={e => e.stopPropagation()}
+          >
+            <h3 className="text-2xl font-bold mb-4">
+              {selectedMethod.name}
+              <span className="ml-3 px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                {selectedMethod.category}
+              </span>
+            </h3>
+            <p className="text-gray-600 mb-4">{selectedMethod.description}</p>
+            <div className="bg-gray-50 rounded-lg p-4 mb-4">
+              <h4 className="text-sm font-semibold text-gray-700 mb-2">Signature</h4>
+              <code className="text-sm text-gray-800 font-mono">{selectedMethod.signature}</code>
+            </div>
+            <div className="bg-blue-50 rounded-lg p-4">
+              <h4 className="text-sm font-semibold text-blue-700 mb-2">Example</h4>
+              <code className="text-sm text-blue-800 font-mono">{selectedMethod.example}</code>
+            </div>
+            <button
+              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold"
+              onClick={() => setSelectedMethod(null)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Documentation CTA */}
+      <div className="text-center mt-16">
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-12 max-w-4xl mx-auto">
             <div className="flex items-center justify-center mb-6">
               <Book size={32} className="text-blue-600" />
@@ -207,7 +253,12 @@ const Documentation = () => {
               tutorials, and advanced usage patterns.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl"
+                onClick={() => {
+                  window.location.hash = '/docs';
+                }}
+              >
                 <span>View Full Docs</span>
                 <ChevronRight size={20} />
               </button>

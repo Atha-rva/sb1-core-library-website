@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Download, Github, Star } from 'lucide-react';
 
-const Header = () => {
+interface HeaderProps {
+  docsPage?: boolean;
+}
+const Header = ({ docsPage = false }: HeaderProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -13,12 +16,14 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { name: 'Features', href: '#features' },
-    { name: 'Examples', href: '#examples' },
-    { name: 'Docs', href: '#docs' },
-    { name: 'Community', href: '#community' }
-  ];
+  const navItems = docsPage
+    ? [{ name: 'Home', href: '#/' }]
+    : [
+        { name: 'Features', href: '#features' },
+        { name: 'Examples', href: '#examples' },
+        { name: 'Docs', href: '#docs' },
+        { name: 'Community', href: '#community' }
+      ];
 
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
